@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 centered">
+      <h2>{{ applicant.name }}</h2>
+      <form action="" method="post" name="feedback">
+          {{ form.hidden_tag() }}
+          <p>
+              Notes:<br>
+              {{ form.notes(class="form-control", rows=4) }}<br>
+          </p>
+          <p>
+              Feedback:<br>
+              {{ form.feedback(class="form-control", rows=4) }}<br>
+          </p>
+          <div class="text-center">
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

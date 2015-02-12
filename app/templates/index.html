@@ -3,8 +3,15 @@
 {% block content %}
   <h1>Home</h1>
   {% if g.user.is_authenticated() %}
+    <p>Welcome, {{ current_user.name }}</p>
     <a href="{{ url_for('logout') }}">Logout</a>
   {% else %}
     <a href="{{ url_for('login') }}">Login</a>
   {% endif %}
+  <br>
+  <h2>Finalists</h2>
+  {% for applicant in applicants %}
+    <a href="feedback/{{ applicant.id }}">{{ applicant.name }}</a>
+    <br>
+  {% endfor %}
 {% endblock %}
