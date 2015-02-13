@@ -2,3 +2,19 @@
   margin: 0 auto;
   float: none;
 }
+
+.form-error {
+  color: red;
+}
+
+.note {
+  color: #888;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+a img:hover{
+  opacity: .8;
+}

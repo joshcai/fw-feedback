@@ -5,8 +5,8 @@
   <a href="{{ url_for('logout') }}">Logout</a>
   <br>
   <h2>Finalists</h2>
-  <div class="row">
-    {% for applicant in applicants %}
+  {% for applicant in applicants %}
+    <div class="row">
       <div class="col-md-3 text-center">
         <a href="feedback/{{ applicant.id }}">
           <img src="{{ applicant.img }}">
@@ -15,6 +15,14 @@
         </a>
         <br>
       </div>
-    {% endfor %}
-  </div>
+      <div class="col-md-9">
+        {% for f in applicant.feedback.all() %}
+          <strong>{{ f.author.name }}:</strong>
+          {{ f.feedback }}
+          <br>
+        {% endfor %}
+      </div>
+    </div>
+    <br>
+  {% endfor %}
 {% endblock %}

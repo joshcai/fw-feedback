@@ -1,4 +1,3 @@
-import datetime
 from flask import render_template, flash, redirect, session, url_for, request, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
@@ -13,13 +12,16 @@ def before_request():
 @app.route('/home')
 @login_required
 def index():
+  applicants = Applicant.query.all()
   context = {
-    'title': 'Home'
-    }
-  if g.user is not None and g.user.is_authenticated():
-    applicants = Applicant.query.all()
-    context['applicants'] = applicants
-  return render_template('index.html', **context)
+    'title': 'Home',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
@@ -39,7 +41,7 @@ def login():
 @login_required
 def logout():
   logout_user()
-  return redirect(url_for('index'))
+  return redirect(url_for('login'))
 
 @app.route('/feedback/<int:applicant_id>', methods=['GET', 'POST'])
 @login_required
@@ -53,7 +55,6 @@ def applicant(applicant_id):
     if feedback:
       feedback.notes = form.notes.data
       feedback.feedback = form.feedback.data
-      # feedback.last_modified = datetime.datetime.utcnow
     else:
       feedback = Feedback(user_id=g.user.id, applicant_id=applicant_id,
                           notes=form.notes.data, feedback=form.feedback.data)
