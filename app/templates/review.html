@@ -17,9 +17,11 @@
       </div>
       <div class="col-md-9">
         {% for f in applicant.feedback.all() %}
-          <strong>{{ f.author.name }}:</strong>
-          {{ f.feedback }}
-          <br>
+          {% if f.feedback  %}
+            <strong>{{ f.author.name }}:</strong>
+            {{ f.feedback }}
+            <br>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
