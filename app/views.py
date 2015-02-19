@@ -48,16 +48,16 @@ def logout():
 def applicant(applicant_id):
   feedback = Feedback.query.filter_by(user_id=g.user.id, applicant_id=applicant_id).first()
   if feedback:
-    form = FeedbackForm(notes=feedback.notes, feedback=feedback.feedback)
+    form = FeedbackForm(notes=feedback.notes, feedback=feedback.feedback,
+                        rating=feedback.rating)
   else:
     form = FeedbackForm()
   if form.validate_on_submit():
-    if feedback:
-      feedback.notes = form.notes.data
-      feedback.feedback = form.feedback.data
-    else:
-      feedback = Feedback(user_id=g.user.id, applicant_id=applicant_id,
-                          notes=form.notes.data, feedback=form.feedback.data)
+    if not feedback:
+      feedback = Feedback(user_id=g.user.id, applicant_id=applicant_id)
+    feedback.notes = form.notes.data
+    feedback.feedback = form.feedback.data
+    feedback.rating = form.rating.data
     db.session.add(feedback)
     db.session.commit()
     return redirect(url_for('index'))

@@ -16,6 +16,15 @@
             Feedback:<br>
             {{ form.feedback(class="form-control", rows=4) }}<br>
           </p>
+          <p>
+            Rating: &nbsp;&nbsp;&nbsp;&nbsp;
+            {% for field in form.rating %}
+              <label class="radio-inline">
+                {{ field }}
+                {{ field.label | striptags }}
+              </label>
+            {% endfor %}
+          </p>
           <div class="text-center">
             <button type="submit" class="btn btn-success">Save</button>
           </div>
