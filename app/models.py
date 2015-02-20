@@ -8,12 +8,22 @@ class Applicant(db.Model):
 
   @property
   def img(self):
-    return '/static/img/%s-%s.jpg' % (self.last_name.lower(), self.first_name.lower())
+    return '/static/img/%s-%s.jpg' % (self.last_name.lower(),
+                                      self.first_name.lower())
 
   id = db.Column(db.Integer, primary_key=True)
   first_name = db.Column(db.String(120), index=True)
   last_name = db.Column(db.String(120), index=True)
   feedback = db.relationship('Feedback', backref='applicant', lazy='dynamic')
+
+  def calculate_average(self, role):
+    f = db.session.query(Feedback).join(User).join(UserRoles).join(Role).\
+        filter(Feedback.applicant_id == self.id).\
+        filter(Role.name == role).all()
+    ratings = [x.rating for x in f if x.rating]
+    if len(ratings) == 0:
+      return None
+    return sum(ratings) / float(len(ratings))
 
   def __repr__(self):
     return '<User %r %r>' % (self.first_name, self.last_name)
@@ -54,7 +64,9 @@ class Feedback(db.Model):
   notes = db.Column(db.String(140))
   rating = db.Column(db.Integer)
   user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
-  applicant_id = db.Column(db.Integer, db.ForeignKey('applicant.id', ondelete='CASCADE'))
+  applicant_id = db.Column(db.Integer,
+                           db.ForeignKey('applicant.id', ondelete='CASCADE'))
+
 
   def __repr__(self):
     return '<Feedback %r>' % (self.feedback)

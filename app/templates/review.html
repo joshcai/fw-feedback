@@ -23,6 +23,11 @@
             <br>
           {% endif %}
         {% endfor %}
+        <br>
+        <strong>Rating Averages:</strong>
+        <p>Other: {{ applicant.calculate_average('other') }}</p>
+        <p>Seniors: {{ applicant.calculate_average('senior') }}</p>
+        <p>Alumni: {{ applicant.calculate_average('alumni') }}</p>
       </div>
     </div>
     <br>

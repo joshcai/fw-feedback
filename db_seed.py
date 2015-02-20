@@ -2,6 +2,7 @@ from app import db
 from app.models import User, Applicant, Feedback, Role, UserRoles
 from werkzeug.security import generate_password_hash
 import json
+import random
 
 
 # clear database
@@ -43,6 +44,40 @@ for user in data['users']:
       ur = UserRoles(user_id=u.id, role_id=r.id)
       db.session.add(ur)
       db.session.commit()
+
+joseph = Applicant.query.filter_by(first_name='Joseph').first()
+
+for i in xrange(10):
+  u = User(name='Freshman ' + str(i))
+  db.session.add(u)
+  db.session.commit()
+  r = Role.query.filter_by(name='other').first()
+  if r:
+    ur = UserRoles(user_id=u.id, role_id=r.id)
+    db.session.add(ur)
+    db.session.commit()
+  f = Feedback(user_id=u.id, applicant_id=joseph.id,
+               rating=random.randint(1, 5))
+  db.session.add(f)
+  db.session.commit()
+
+for i in xrange(10):
+  u = User(name='Senior ' + str(i))
+  db.session.add(u)
+  db.session.commit()
+  r = Role.query.filter_by(name='senior').first()
+  if r:
+    ur = UserRoles(user_id=u.id, role_id=r.id)
+    db.session.add(ur)
+    db.session.commit()
+  f = Feedback(user_id=u.id, applicant_id=joseph.id,
+               rating=random.randint(1, 5))
+  db.session.add(f)
+  db.session.commit()
+
+print joseph.calculate_average('other')
+print joseph.calculate_average('senior')
+
 
 # print current users
 users = User.query.all()
