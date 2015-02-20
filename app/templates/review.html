@@ -2,7 +2,12 @@
 
 {% block content %}
   <p>Welcome, {{ current_user.name }}</p>
-  <a href="{{ url_for('logout') }}">Logout</a>
+  <a href="/export" download="ratings.xls">
+    <button type="button" class="btn btn-success">Export Ratings</button>
+  </a>
+  <a href="{{ url_for('logout') }}">
+    <button type="button" class="btn btn-danger">Logout</button>
+  </a>
   <br>
   <h2>Finalists</h2>
   {% for applicant in applicants %}
@@ -16,20 +21,41 @@
         <br>
       </div>
       <div class="col-md-9">
-        {% for f in applicant.feedback.all() %}
-          {% if f.feedback  %}
+        {% for f in applicant.feedback.all() -%}
+          {% if (f.feedback or f.rating) %}
             <strong>{{ f.author.name }}:</strong>
-            {{ f.feedback }}
+            {% if f.rating -%}
+              {{ f.rating }}
+            {%- endif %}
+            {% if (f.feedback and f.rating) -%}
+              -
+            {%- endif %}
+            {% if f.feedback %}
+              {{ f.feedback }}
+            {% endif %}
             <br>
           {% endif %}
-        {% endfor %}
+        {%- endfor %}
         <br>
         <strong>Rating Averages:</strong>
-        <p>Other: {{ applicant.calculate_average('other') }}</p>
-        <p>Seniors: {{ applicant.calculate_average('senior') }}</p>
-        <p>Alumni: {{ applicant.calculate_average('alumni') }}</p>
+        <div class="row text-center">
+          <div class="col-md-4">
+            Freshmen-Juniors:
+            {{ "%.2f" | format(applicant.calculate_average('other')) }}
+          </div>
+          <div class="col-md-4">
+            Seniors:
+            {{ "%.2f" | format(applicant.calculate_average('senior')) }}
+          </div>
+          <div class="col-md-4">
+            Alumni:
+            {{ "%.2f" | format(applicant.calculate_average('alumni')) }}
+          </div>
+        </div>
       </div>
     </div>
     <br>
   {% endfor %}
 {% endblock %}
+
+  u = User(email='staff1@example.com', password=generate_password_hash('testpass'), name='Staff Test')

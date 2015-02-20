@@ -46,34 +46,31 @@ for user in data['users']:
       db.session.commit()
 
 joseph = Applicant.query.filter_by(first_name='Joseph').first()
+bogdan = Applicant.query.filter_by(first_name='Bogdan').first()
+hunter = Applicant.query.filter_by(first_name='Hunter').first()
 
-for i in xrange(10):
-  u = User(name='Freshman ' + str(i))
-  db.session.add(u)
-  db.session.commit()
-  r = Role.query.filter_by(name='other').first()
-  if r:
-    ur = UserRoles(user_id=u.id, role_id=r.id)
-    db.session.add(ur)
-    db.session.commit()
-  f = Feedback(user_id=u.id, applicant_id=joseph.id,
-               rating=random.randint(1, 5))
-  db.session.add(f)
-  db.session.commit()
+apps = [joseph, bogdan, hunter]
+roles = [('Freshman ', 'other'), ('Senior ', 'senior'),
+         ('Alumnus ', 'alumni')]
 
-for i in xrange(10):
-  u = User(name='Senior ' + str(i))
-  db.session.add(u)
-  db.session.commit()
-  r = Role.query.filter_by(name='senior').first()
-  if r:
-    ur = UserRoles(user_id=u.id, role_id=r.id)
-    db.session.add(ur)
+for role in roles:
+  for i in xrange(random.randint(6,9)):
+    u = User(name=role[0] + str(i), email=role[0].lower().rstrip()+str(i),
+             password=generate_password_hash('testpass'))
+    db.session.add(u)
     db.session.commit()
-  f = Feedback(user_id=u.id, applicant_id=joseph.id,
-               rating=random.randint(1, 5))
-  db.session.add(f)
-  db.session.commit()
+    r = Role.query.filter_by(name=role[1]).first()
+    if r:
+      ur = UserRoles(user_id=u.id, role_id=r.id)
+      db.session.add(ur)
+      db.session.commit()
+    for a in apps:
+      if random.randint(0, 10) < 6:
+        f = Feedback(user_id=u.id, applicant_id=a.id,
+                     rating=random.randint(1, 5))
+        db.session.add(f)
+        db.session.commit()
+
 
 print joseph.calculate_average('other')
 print joseph.calculate_average('senior')

@@ -1,9 +1,12 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
 from forms import LoginForm, FeedbackForm
 from models import User, Feedback, Applicant
+from decorators import role_required
+from tempfile import NamedTemporaryFile
+from xlwt import Workbook
 
 @app.before_request
 def before_request():
@@ -21,6 +24,27 @@ def index():
   if g.user.has_role('staff'):
     template = 'review.html'
   return render_template(template, **context)
+
+@app.route('/export')
+@login_required
+@role_required('staff')
+def export():
+  applicants = Applicant.query.order_by(Applicant.last_name).all()
+  book = Workbook()
+  sheet1 = book.add_sheet('Sheet 1')
+  sheet1.write(0, 0, 'Finalists')
+  sheet1.write(0, 1, 'Freshman-Juniors Average')
+  sheet1.write(0, 2, 'Seniors Average')
+  sheet1.write(0, 3, 'Alumni Average')
+  for i, applicant in enumerate(applicants):
+    sheet1.write(i+1, 0, '%s, %s' % (applicant.last_name, applicant.first_name))
+    sheet1.write(i+1, 1, applicant.calculate_average('other'))
+    sheet1.write(i+1, 2, applicant.calculate_average('senior'))
+    sheet1.write(i+1, 3, applicant.calculate_average('alumni'))
+  with NamedTemporaryFile() as f:
+    book.save(f)
+    f.seek(0)
+    return send_file(f.name, as_attachment=True, attachment_filename='ratings.xls')
 
 
 @app.route('/', methods=['GET', 'POST'])

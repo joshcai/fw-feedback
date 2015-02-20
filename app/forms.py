@@ -10,4 +10,4 @@ class FeedbackForm(Form):
   notes = TextAreaField('notes', validators=[Optional()])
   feedback = TextAreaField('feedback')
   rating = RadioField('rating', choices=[('1', '1'), ('2', '2'), ('3', '3'),
-                      ('4', '4'), ('5', '5')], validators=[Optional()])
+                      ('4', '4'), ('5', '5 (best)')], validators=[Optional()])
