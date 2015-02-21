@@ -4,3 +4,4 @@ config.py
 app.db
 db_repository/
 *.sh
+app/static/img/
