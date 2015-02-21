@@ -46,19 +46,31 @@ def export():
     f.seek(0)
     return send_file(f.name, as_attachment=True, attachment_filename='ratings.xls')
 
-
+# GET gets information from the server (server -> client)
+# POST sends info to the server (client -> server)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+  #If the user exists and is logged in, redirect us to the homepage
+  #The homepage is the index method
   if g.user is not None and g.user.is_authenticated():
     return redirect(url_for('index'))
+  #Initialize the login form
   form = LoginForm()
+  #If the request was a POST request (user hit Login) and the fields were valid
   if form.validate_on_submit():
+    #Find the user with the email that was specified
     user = User.query.filter_by(email=form.email.data).first()
+    #If the email is found in the database, check the password
     if user:
+      #If the password is correct, login the user
       if check_password_hash(user.password, form.password.data):
         login_user(user, remember=True)
+        #Send them to the index page, or whatever page they were trying to access
         return redirect(request.args.get('next') or url_for('index'))
+      flash('Wrong Password')
+    else:
+      flash('No Email Found')
   return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
@@ -93,6 +105,14 @@ def applicant(applicant_id):
     'form': form
   }
   return render_template('applicant.html', **context)
+
+@app.route('/admin')
+@login_required
+def admin():
+  #Get all of the users using a query.
+  users = User.query.order_by(User.name).all()
+  #Send users to template
+  return render_template('admin.html', users=users)
 
 
 @lm.user_loader
