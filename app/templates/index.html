@@ -5,15 +5,20 @@
   <a href="{{ url_for('logout') }}">Logout</a>
   <br>
   <a href="{{ url_for('alpha') }}">Alphabetical</a>
-  <a href="{{ url_for('colorado') }}">Colorado</a>
+  <a href="{{ url_for('men') }}">Men</a>
+  <a href="{{ url_for('women') }}">Women</a>
   <a href="{{ url_for('texas') }}">Texas</a>
+  <a href="{{ url_for('group1') }}">Group 1</a>
+  <a href="{{ url_for('group2') }}">Group 2</a>
+  <a href="{{ url_for('group3') }}">Group 3</a>
+  <a href="{{ url_for('group4') }}">Group 4</a>
   <br>
   <h2>Finalists</h2>
   <div class="row">
     {% for applicant in applicants %}
       <div class="col-md-3 text-center">
         <a href="feedback/{{ applicant.id }}">
-          <img src="{{ applicant.img }}" width=128 height=170>
+          <img src="{{ applicant.img }}" width=150 height=180>
           <br>
           {{ applicant.name }}
         </a>

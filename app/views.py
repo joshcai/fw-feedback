@@ -38,12 +38,25 @@ def alpha():
     template = 'review.html'
   return render_template(template, **context)
 
-@app.route('/colorado')
+@app.route('/men')
 @login_required
-def colorado():
-  applicants = Applicant.query.filter_by(home_state='Colorado').all()
+def men():
+  applicants = Applicant.query.filter_by(title='Mr.').all()
   context = {
-    'title': 'Finalists from Colorado',
+    'title': 'Male Finalists',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/women')
+@login_required
+def women():
+  applicants = Applicant.query.filter_by(title='Ms.').all()
+  context = {
+    'title': 'Female Finalists',
     'applicants': applicants
   }
   template = 'index.html'
@@ -64,12 +77,51 @@ def texas():
     template = 'review.html'
   return render_template(template, **context)
 
-@app.route('/group')
+@app.route('/group1')
 @login_required
-def group():
-  applicants = Applicant.query.order_by(Applicant.group).all()
+def group1():
+  applicants = Applicant.query.filter_by(group='1').all()
   context = {
-    'title': 'Finalists Sorted by Group',
+    'title': 'Finalists in Group 1',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/group2')
+@login_required
+def group2():
+  applicants = Applicant.query.filter_by(group='2').all()
+  context = {
+    'title': 'Finalists in Group 2',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/group3')
+@login_required
+def group3():
+  applicants = Applicant.query.filter_by(group='3').all()
+  context = {
+    'title': 'Finalists in Group 3',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/group4')
+@login_required
+def group4():
+  applicants = Applicant.query.filter_by(group='4').all()
+  context = {
+    'title': 'Finalists in Group 4',
     'applicants': applicants
   }
   template = 'index.html'
