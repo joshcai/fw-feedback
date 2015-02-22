@@ -25,6 +25,58 @@ def index():
     template = 'review.html'
   return render_template(template, **context)
 
+@app.route('/alpha')
+@login_required
+def alpha():
+  applicants = Applicant.query.order_by(Applicant.last_name).all()
+  context = {
+    'title': 'Finalists sorted by Last Name',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/colorado')
+@login_required
+def colorado():
+  applicants = Applicant.query.filter_by(home_state='Colorado').all()
+  context = {
+    'title': 'Finalists from Colorado',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/texas')
+@login_required
+def texas():
+  applicants = Applicant.query.filter_by(home_state='Texas').all()
+  context = {
+    'title': 'Finalists from Texas',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/group')
+@login_required
+def group():
+  applicants = Applicant.query.order_by(Applicant.group).all()
+  context = {
+    'title': 'Finalists Sorted by Group',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
 @app.route('/export')
 @login_required
 @role_required('staff')

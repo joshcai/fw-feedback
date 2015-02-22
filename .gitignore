@@ -5,3 +5,5 @@ app.db
 db_repository/
 *.sh
 app/static/img/
+scholar_info.txt
+generate_json.py

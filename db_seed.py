@@ -26,7 +26,11 @@ for role in data['roles']:
 
 # add applicants from data file
 for applicant in data['applicants']:
-  a = Applicant(first_name=applicant['first'], last_name=applicant['last'])
+  a = Applicant(title=applicant['title'], first_name=applicant['first'],
+    last_name=applicant['last'], group=applicant['group'],
+    home_city=applicant['city'], home_state=applicant['state'],
+    high_school=applicant['school'], major=applicant['major'],
+    career=applicant['career'])
   db.session.add(a)
 
 db.session.commit()
@@ -45,9 +49,10 @@ for user in data['users']:
       db.session.add(ur)
       db.session.commit()
 
-joseph = Applicant.query.filter_by(first_name='Joseph').first()
-bogdan = Applicant.query.filter_by(first_name='Bogdan').first()
-hunter = Applicant.query.filter_by(first_name='Hunter').first()
+#These pointers have been mapped to actual finalists now.
+joseph = Applicant.query.all()[0]
+bogdan = Applicant.query.all()[1]
+hunter = Applicant.query.all()[5]
 
 apps = [joseph, bogdan, hunter]
 roles = [('Freshman ', 'other'), ('Senior ', 'senior'),

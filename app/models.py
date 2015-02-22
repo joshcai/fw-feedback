@@ -8,12 +8,19 @@ class Applicant(db.Model):
 
   @property
   def img(self):
-    return '/static/img/%s-%s.jpg' % (self.last_name.lower(),
-                                      self.first_name.lower())
+    return '/static/img/%s,%s.jpg' % (self.last_name.title(),
+                                      self.first_name.title())
 
   id = db.Column(db.Integer, primary_key=True)
+  title = db.Column(db.String(120), index=True)
   first_name = db.Column(db.String(120), index=True)
   last_name = db.Column(db.String(120), index=True)
+  group = db.Column(db.String(120), index=True)
+  home_city = db.Column(db.String(120), index=True)
+  home_state = db.Column(db.String(120), index=True)
+  high_school = db.Column(db.String(120), index=True)
+  major = db.Column(db.String(120), index=True)
+  career = db.Column(db.String(120), index=True)
   feedback = db.relationship('Feedback', backref='applicant', lazy='dynamic')
 
   def calculate_average(self, role):
