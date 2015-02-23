@@ -22,7 +22,7 @@
       </div>
       <div class="col-md-9">
         {% for f in applicant.feedback.all() -%}
-          {% if (f.feedback or f.rating) %}
+          {% if (f.feedback or f.rating is number) %}
             <strong>{{ f.author.name }}:</strong>
             {% if f.rating is number -%}
               {{ f.rating }}
