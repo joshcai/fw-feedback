@@ -1,3 +1,4 @@
+from threading import Thread
 from functools import wraps
 from flask_login import current_user
 from flask import flash, redirect, url_for
@@ -14,4 +15,10 @@ def role_required(required_role):
       # Call the actual view
       return func(*args, **kwargs)
     return decorated_view
+  return wrapper
+
+def async(f):
+  def wrapper(*args, **kwargs):
+    thread = Thread(target=f, args=args, kwargs=kwargs)
+    thread.start()
   return wrapper
