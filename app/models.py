@@ -14,13 +14,7 @@ class Applicant(db.Model):
   @property
   def feedback_count(self):
     f = db.session.query(Feedback).filter_by(applicant_id=self.id).all()
-    f_ids = [x.id for x in f if x.feedback];
-
-    for x in f:
-      if x.rating and x.id not in f_ids:
-        f_ids.append(x.id)
-
-    return len(f_ids)
+    return len(f)
 
   @property
   def hometown(self):

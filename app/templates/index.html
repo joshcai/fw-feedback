@@ -2,19 +2,22 @@
 
 {% block content %}
   <p>Welcome, {{ current_user.name }}</p>
-  <a href="{{ url_for('logout') }}">Logout</a>
+  <a href="{{ url_for('logout') }}">
+    <button type="button" class="btn btn-danger">Logout</button>
+  </a>
   <br>
-  <a href="{{ url_for('alpha') }}">Alphabetical</a>
-  <a href="{{ url_for('least_feedback') }}">Least Feedback</a>
-  <a href="{{ url_for('most_feedback') }}">Most Feedback</a><br>
-  <a href="{{ url_for('men') }}">Men</a>
-  <a href="{{ url_for('women') }}">Women</a>
-  <a href="{{ url_for('texas') }}">Texas</a><br>
-  <a href="{{ url_for('group1') }}">Group 1</a>
-  <a href="{{ url_for('group2') }}">Group 2</a>
-  <a href="{{ url_for('group3') }}">Group 3</a>
-  <a href="{{ url_for('group4') }}">Group 4</a>
-  <br>
+  <div class="nav">
+    <a href="{{ url_for('alpha') }}">Alphabetical</a>
+    <a href="{{ url_for('group1') }}">Group 1</a>
+    <a href="{{ url_for('group2') }}">Group 2</a>
+    <a href="{{ url_for('group3') }}">Group 3</a>
+    <a href="{{ url_for('group4') }}">Group 4</a><br>
+    <a href="{{ url_for('least_feedback') }}">Least Feedback</a>
+    <a href="{{ url_for('most_feedback') }}">Most Feedback</a>
+    <a href="{{ url_for('men') }}">Men</a>
+    <a href="{{ url_for('women') }}">Women</a>
+    <a href="{{ url_for('texas') }}">Texas</a>
+  </div>
   <h2>Finalists</h2>
   <div class="row">
     {% for applicant in applicants %}

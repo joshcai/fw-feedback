@@ -3,17 +3,19 @@
 {% block content %}
   <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 centered text-center">
-      <img src="{{ applicant.img }}" width=150 height=180>
-      <h2>{{ applicant.name }}</h2>
-      <div class="text-left">
-        <p>
-          <strong>Hometown:</strong> {{ applicant.hometown }}<br>
-          <strong>High School:</strong> {{ applicant.high_school }}<br>
-          <strong>Major:</strong> {{ applicant.major }}<br>
-          <strong>Career:</strong> {{ applicant.career }}<br><br>
-          <strong>Feedback Count:</strong> {{ applicant.feedback_count }}<br>
+      <h3>{{ applicant.name }}</h3>
+      <div class="scholar-info">
+        <img class="pull-left" src="{{ applicant.img }}" width=150 height=180>
+        <p class="text-left">
+          <b>Group:</b> {{ applicant.group }}<br>
+          <b>Hometown:</b> {{ applicant.hometown }}<br>
+          <b>High School:</b> {{ applicant.high_school }}<br>
+          <b>Major:</b> {{ applicant.major }}<br>
+          <b>Career:</b> {{ applicant.career }}<br>
+          <b>Feedback Count:</b> {{ applicant.feedback_count }}
         </p>
       </div>
+      <br><br>
       <div class="text-left">
         <form action="" method="post" name="feedback">
           {{ form.hidden_tag() }}
