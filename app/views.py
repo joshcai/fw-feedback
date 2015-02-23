@@ -167,16 +167,37 @@ def group4():
 def export():
   applicants = Applicant.query.order_by(Applicant.last_name).all()
   book = Workbook()
-  sheet1 = book.add_sheet('Sheet 1')
+  sheet1 = book.add_sheet('Rating Averages')
+  sheet2 = book.add_sheet('Ratings');
   sheet1.write(0, 0, 'Finalists')
   sheet1.write(0, 1, 'Freshman-Juniors Average')
   sheet1.write(0, 2, 'Seniors Average')
   sheet1.write(0, 3, 'Alumni Average')
+  sheet2.write(0, 0, 'Finalist')
+  sheet2.write(0, 1, 'Commenter')
+  sheet2.write(0, 2, 'Rating')
+  sheet2.write(0, 3, 'Comment')
+
+  #Keep track of the line in the second sheet.
+  s2_line = 1
+
   for i, applicant in enumerate(applicants):
     sheet1.write(i+1, 0, '%s, %s' % (applicant.last_name, applicant.first_name))
     sheet1.write(i+1, 1, applicant.calculate_average('other'))
     sheet1.write(i+1, 2, applicant.calculate_average('senior'))
     sheet1.write(i+1, 3, applicant.calculate_average('alumni'))
+
+    #Get all the feedback on an applicant ordered by descending rating
+    feedbacks = Feedback.query.filter_by(applicant_id=applicant.id).\
+      order_by(Feedback.rating.desc()).all()
+    for feedback in feedbacks:
+      commenter = User.query.filter_by(id=feedback.user_id).first()
+      sheet2.write(s2_line, 0, '%s, %s' % (applicant.last_name, applicant.first_name))
+      sheet2.write(s2_line, 1, '%s' % (commenter.name))
+      sheet2.write(s2_line, 2, '%s' % (feedback.rating))
+      sheet2.write(s2_line, 3, '%s' % (feedback.feedback))
+      s2_line += 1
+
   with NamedTemporaryFile() as f:
     book.save(f)
     f.seek(0)

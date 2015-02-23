@@ -3,20 +3,22 @@
 {% block content %}
   <p class="pull-left">Welcome, {{ current_user.name }}</p>
   <a class="pull-right" href="{{ url_for('logout') }}">
-    <button type="button" class="btn btn-danger">Logout</button>
+    <button type="button" class="btn btn-logout">Logout</button>
   </a>
   <br>
-  <div class="nav">
-    <a href="{{ url_for('alpha') }}">Alphabetical</a>
-    <a href="{{ url_for('group1') }}">Group 1</a>
-    <a href="{{ url_for('group2') }}">Group 2</a>
-    <a href="{{ url_for('group3') }}">Group 3</a>
-    <a href="{{ url_for('group4') }}">Group 4</a><br>
-    <a href="{{ url_for('least_feedback') }}">Least Feedback</a>
-    <a href="{{ url_for('most_feedback') }}">Most Feedback</a>
-    <a href="{{ url_for('men') }}">Men</a>
-    <a href="{{ url_for('women') }}">Women</a>
-    <a href="{{ url_for('texas') }}">Texas</a>
+  <div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+      <li><a href="{{ url_for('alpha') }}">Alphabetical</a></li>
+      <li><a href="{{ url_for('group1') }}">Group 1</a></li>
+      <li><a href="{{ url_for('group2') }}">Group 2</a></li>
+      <li><a href="{{ url_for('group3') }}">Group 3</a></li>
+      <li><a href="{{ url_for('group4') }}">Group 4</a></li>
+      <li><a href="{{ url_for('least_feedback') }}">Least Feedback</a></li>
+      <li><a href="{{ url_for('most_feedback') }}">Most Feedback</a></li>
+      <li><a href="{{ url_for('men') }}">Men</a></li>
+      <li><a href="{{ url_for('women') }}">Women</a></li>
+      <li><a href="{{ url_for('texas') }}">Texas</a></li>
+    </ul>
   </div>
   <h2>Finalists</h2>
   <div class="row">

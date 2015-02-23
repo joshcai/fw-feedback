@@ -1,3 +1,15 @@
+.btn-export, .btn-save {
+  color: #ffffff;
+  background-color: #008542;
+  border-color: transparent;
+}
+
+.btn-login, .btn-logout {
+  color: #ffffff;
+  background-color: #C75B12;
+  border-color: transparent;
+}
+
 .centered {
   margin: 0 auto;
   float: none;
@@ -15,12 +27,8 @@
   margin-right: 20px;
 }
 
-.nav {
-  margin: 14px 10px;
-}
-
 .nav a {
-  margin: 14px 10px;
+  color: #008542;
 }
 
 .note {

@@ -4,10 +4,10 @@
   <p class="pull-left">Welcome, {{ current_user.name }}</p>
   <div class="pull-right">
     <a href="/export" download="ratings.xls">
-      <button type="button" class="btn btn-success">Export Ratings</button>
+      <button type="button" class="btn btn-export">Export Ratings</button>
     </a>
     <a href="{{ url_for('logout') }}">
-      <button type="button" class="btn btn-danger">Logout</button>
+      <button type="button" class="btn btn-logout">Logout</button>
     </a>
   </div>
   <br>
