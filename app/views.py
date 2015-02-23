@@ -7,6 +7,10 @@ from models import User, Feedback, Applicant
 from decorators import role_required
 from tempfile import NamedTemporaryFile
 from xlwt import Workbook
+from itsdangerous import URLSafeTimedSerializer
+from emails import password_reset_email
+
+ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 @app.before_request
 def before_request():
@@ -24,6 +28,29 @@ def index():
   if g.user.has_role('staff'):
     template = 'review.html'
   return render_template(template, **context)
+
+@app.route('/sendreset/<int:user_id>')
+@login_required
+@role_required('admin')
+def send_activation_email(user_id):
+  user = User.query.get(user_id)
+  token = ts.dumps(user.email, salt='email-confirm-yay')
+  url = url_for('reset_password', token=token, _external=True)
+  password_reset_email(user, url)
+  return 200
+ 
+# Not finished
+@app.route('/reset/<token>')
+def password_reset(token):
+  try:
+    email = ts.loads(token, salt='email-confirm-yay', max_age=86400)
+  except:
+    abort(404)
+  user = User.query.filter_by(email=email).first()
+
+  login_user(user, remember=True)
+  return 200
+ 
 
 @app.route('/alpha')
 @login_required
