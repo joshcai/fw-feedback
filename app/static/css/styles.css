@@ -7,16 +7,28 @@
   color: red;
 }
 
+.scholar-info {
+  color: #000000;
+}
+
 .scholar-info img {
-	margin-right: 20px;
+  margin-right: 20px;
+}
+
+.nav {
+  margin: 14px 10px;
 }
 
 .nav a {
-  padding: 14px 10px;
+  margin: 14px 10px;
 }
 
 .note {
   color: #888;
+}
+
+a {
+  color: #E98300;
 }
 
 a:hover{
@@ -25,4 +37,21 @@ a:hover{
 
 a img:hover{
   opacity: .8;
+}
+
+img {
+  border: 2px solid #008542;
+}
+
+h1, h2, h3 {
+  color: #C75B12;
+}
+
+body {
+  background-color: #D5D2CA;
+  color: #000000;
+}
+
+body b, body strong {
+  color: #008542;
 }

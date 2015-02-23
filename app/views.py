@@ -41,7 +41,8 @@ def alpha():
 @app.route('/men')
 @login_required
 def men():
-  applicants = Applicant.query.filter_by(title='Mr.').all()
+  applicants = Applicant.query.filter_by(title='Mr.').\
+    order_by(Applicant.last_name).all()
   context = {
     'title': 'Male Finalists',
     'applicants': applicants
@@ -54,7 +55,8 @@ def men():
 @app.route('/women')
 @login_required
 def women():
-  applicants = Applicant.query.filter_by(title='Ms.').all()
+  applicants = Applicant.query.filter_by(title='Ms.').\
+    order_by(Applicant.last_name).all()
   context = {
     'title': 'Female Finalists',
     'applicants': applicants
@@ -67,7 +69,8 @@ def women():
 @app.route('/texas')
 @login_required
 def texas():
-  applicants = Applicant.query.filter_by(home_state='Texas').all()
+  applicants = Applicant.query.filter_by(home_state='Texas').\
+    order_by(Applicant.last_name).all()
   context = {
     'title': 'Finalists from Texas',
     'applicants': applicants
