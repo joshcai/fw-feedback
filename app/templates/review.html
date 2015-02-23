@@ -24,10 +24,10 @@
         {% for f in applicant.feedback.all() -%}
           {% if (f.feedback or f.rating) %}
             <strong>{{ f.author.name }}:</strong>
-            {% if f.rating -%}
+            {% if f.rating is number -%}
               {{ f.rating }}
             {%- endif %}
-            {% if (f.feedback and f.rating) -%}
+            {% if (f.feedback and f.rating is number) -%}
               -
             {%- endif %}
             {% if f.feedback %}
