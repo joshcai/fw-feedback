@@ -222,7 +222,7 @@ def applicant(applicant_id):
   else:
     form = FeedbackForm()
   if form.validate_on_submit():
-    if not form.notes.data and not form.feedback.data and not isinstance(form.rating.data, int):
+    if not form.notes.data and not form.feedback.data and form.rating.data == 'None':
       if feedback:
         db.session.delete(feedback)
         db.session.commit()
