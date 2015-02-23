@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Welcome, {{ current_user.name }}</p>
-  <a href="{{ url_for('logout') }}">
+  <p class="pull-left">Welcome, {{ current_user.name }}</p>
+  <a class="pull-right" href="{{ url_for('logout') }}">
     <button type="button" class="btn btn-danger">Logout</button>
   </a>
   <br>
