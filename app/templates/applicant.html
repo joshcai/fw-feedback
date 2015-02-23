@@ -6,6 +6,15 @@
       <img src="{{ applicant.img }}" width=150 height=180>
       <h2>{{ applicant.name }}</h2>
       <div class="text-left">
+        <p>
+          <strong>Hometown:</strong> {{ applicant.hometown }}<br>
+          <strong>High School:</strong> {{ applicant.high_school }}<br>
+          <strong>Major:</strong> {{ applicant.major }}<br>
+          <strong>Career:</strong> {{ applicant.career }}<br><br>
+          <strong>Feedback Count:</strong> {{ applicant.feedback_count }}<br>
+        </p>
+      </div>
+      <div class="text-left">
         <form action="" method="post" name="feedback">
           {{ form.hidden_tag() }}
           <p>

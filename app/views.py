@@ -30,7 +30,7 @@ def index():
 def alpha():
   applicants = Applicant.query.order_by(Applicant.last_name).all()
   context = {
-    'title': 'Finalists sorted by Last Name',
+    'title': 'Finalists Sorted by Last Name',
     'applicants': applicants
   }
   template = 'index.html'
@@ -70,6 +70,35 @@ def texas():
   applicants = Applicant.query.filter_by(home_state='Texas').all()
   context = {
     'title': 'Finalists from Texas',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/least_feedback')
+@login_required
+def least_feedback():
+  applicants = Applicant.query.order_by(Applicant.last_name).all()
+  applicants = sorted(applicants, key=lambda x: x.feedback_count)
+  context = {
+    'title': 'Finalists Sorted by Least Feedback',
+    'applicants': applicants
+  }
+  template = 'index.html'
+  if g.user.has_role('staff'):
+    template = 'review.html'
+  return render_template(template, **context)
+
+@app.route('/most_feedback')
+@login_required
+def most_feedback():
+  applicants = Applicant.query.order_by(Applicant.last_name).all()
+  applicants = sorted(applicants, key=lambda x: x.feedback_count,
+    reverse=True)
+  context = {
+    'title': 'Finalists Sorted by Most Feedback',
     'applicants': applicants
   }
   template = 'index.html'

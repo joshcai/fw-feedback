@@ -11,6 +11,21 @@ class Applicant(db.Model):
     return '/static/img/%s,%s.jpg' % (self.last_name.title(),
                                       self.first_name.title())
 
+  @property
+  def feedback_count(self):
+    f = db.session.query(Feedback).filter_by(applicant_id=self.id).all()
+    f_ids = [x.id for x in f if x.feedback];
+
+    for x in f:
+      if x.rating == 5 and x.id not in f_ids:
+        f_ids.append(x.id)
+
+    return len(f_ids)
+
+  @property
+  def hometown(self):
+    return '%s, %s' % (self.home_city.title(), self.home_state.title())
+
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.String(120), index=True)
   first_name = db.Column(db.String(120), index=True)
@@ -30,6 +45,9 @@ class Applicant(db.Model):
     ratings = [x.rating for x in f if x.rating]
     if len(ratings) == 0:
       return None
+
+    print ratings
+
     return sum(ratings) / float(len(ratings))
 
   def __repr__(self):
