@@ -42,11 +42,9 @@ class Applicant(db.Model):
     f = db.session.query(Feedback).join(User).join(UserRoles).join(Role).\
         filter(Feedback.applicant_id == self.id).\
         filter(Role.name == role).all()
-    ratings = [x.rating for x in f if x.rating]
+    ratings = [x.rating for x in f if isinstance(x.rating, (int, long))]
     if len(ratings) == 0:
       return None
-
-    print ratings
 
     return sum(ratings) / float(len(ratings))
 
