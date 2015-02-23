@@ -17,7 +17,7 @@ class Applicant(db.Model):
     f_ids = [x.id for x in f if x.feedback];
 
     for x in f:
-      if x.rating == 5 and x.id not in f_ids:
+      if x.rating and x.id not in f_ids:
         f_ids.append(x.id)
 
     return len(f_ids)
