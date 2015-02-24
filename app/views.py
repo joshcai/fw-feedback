@@ -2,13 +2,14 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
-from forms import LoginForm, FeedbackForm
+from forms import LoginForm, FeedbackForm, FilterForm
 from models import User, Feedback, Applicant
 from decorators import role_required
 from tempfile import NamedTemporaryFile
 from xlwt import Workbook
 from itsdangerous import URLSafeTimedSerializer
 from emails import password_reset_email
+from sqlalchemy import or_
 
 ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
@@ -16,17 +17,61 @@ ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 def before_request():
   g.user = current_user
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 @login_required
 def index():
-  applicants = Applicant.query.all()
-  context = {
-    'title': 'Home',
-    'applicants': applicants
-  }
+  sort = 'last'
+  groups = ['1', '2', '3', '4']
+  gender = ['m', 'f']
+  location = ['texas', 'other']
+  form = FilterForm(sort=sort, groups=groups, gender=gender, location=location)
+  applicants = Applicant.query
+  if form.validate_on_submit():
+    sort = form.sort.data
+    groups = form.groups.data
+    gender = form.gender.data
+    location = form.location.data
+  if sort == 'first':
+    applicants = applicants.order_by(Applicant.first_name)
+  elif sort == 'last':
+    applicants = applicants.order_by(Applicant.last_name)
+  if request.method == 'POST':
+    group_clauses = []
+    if '1' in groups:
+      group_clauses.append(Applicant.group == '1')
+    if '2' in groups:
+      group_clauses.append(Applicant.group == '2')
+    if '3' in groups:
+      group_clauses.append(Applicant.group == '3')
+    if '4' in groups:
+      group_clauses.append(Applicant.group == '4')
+    applicants = applicants.filter(or_(*group_clauses))
+    gender_clauses = []
+    if 'm' in gender:
+      gender_clauses.append(Applicant.title == 'Mr.')
+    if 'f' in gender:
+      gender_clauses.append(Applicant.title == 'Ms.')
+    applicants = applicants.filter(or_(*gender_clauses))
+    location_clauses = []
+    if 'texas' in location:
+      location_clauses.append(Applicant.home_state == 'Texas')
+    if 'other' in location:
+      location_clauses.append(Applicant.home_state != 'Texas')
+    applicants = applicants.filter(or_(*location_clauses))
+
+  applicants = applicants.all()
+  if sort == 'least':
+    applicants = sorted(applicants, key=lambda x: x.feedback_count)
+  elif sort == 'most':
+    applicants = sorted(applicants, key=lambda x: x.feedback_count, reverse=True)
   template = 'index.html'
   if g.user.has_role('staff'):
     template = 'review.html'
+  context = {
+    'title': 'Home',
+    'applicants': applicants,
+    'form': form
+  }
   return render_template(template, **context)
 
 @app.route('/sendreset/<int:user_id>')

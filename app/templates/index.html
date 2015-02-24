@@ -32,6 +32,56 @@
         <a href="{{ url_for('texas') }}">Texas</a></li>
     </ul>
   </div>
+  <div>
+    <form action="" method="post" name="filter">
+      {{ form.hidden_tag() }}
+      <p>
+        Sort:
+          {% for field in form.sort %}
+            <div class="radio">
+              <label>
+                {{ field }}
+                {{ field.label | striptags }}
+              </label>
+            </div>
+          {% endfor %}
+      </p>
+      <p>
+        Groups:
+          {% for field in form.groups %}
+            <div class="checkbox">
+              <label>
+                {{ field }}
+                {{ field.label | striptags }}
+              </label>
+            </div>
+          {% endfor %}
+      </p>
+      <p>
+        Gender:
+          {% for field in form.gender %}
+            <div class="checkbox">
+              <label>
+                {{ field }}
+                {{ field.label | striptags }}
+              </label>
+            </div>
+          {% endfor %}
+      </p>
+      <p>
+        Location:
+          {% for field in form.location %}
+            <div class="checkbox">
+              <label>
+                {{ field }}
+                {{ field.label | striptags }}
+              </label>
+            </div>
+          {% endfor %}
+      </p>
+      <button type="submit" class="btn btn-login">Refresh List</button>
+    </form>
+  </div>
   <h2 class="text-center">
     {% if title == "Home" %}
       Finalists
