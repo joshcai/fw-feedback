@@ -43,39 +43,55 @@
                     </div>
                   {% endfor %}
               </p>
-              <p class="pull-left">
-                <b>Groups:</b>
-                  {% for field in form.groups %}
-                    <div class="checkbox-inline">
-                      <label>
-                        {{ field }}
-                        {{ field.label | striptags }}
-                      </label>
-                    </div>
-                  {% endfor %}
-              </p>
-              <p class="pull-left">
-                <b>Gender:</b>
-                  {% for field in form.gender %}
-                    <div class="checkbox-inline">
-                      <label>
-                        {{ field }}
-                        {{ field.label | striptags }}
-                      </label>
-                    </div>
-                  {% endfor %}
-              </p>
-              <p class="pull-left">
-                <b>Location:</b>
-                  {% for field in form.location %}
-                    <div class="checkbox-inline">
-                      <label>
-                        {{ field }}
-                        {{ field.label | striptags }}
-                      </label>
-                    </div>
-                  {% endfor %}
-              </p>
+              <div class="row">
+                <div class="col-md-4 cell">
+                  <div class="column c1">
+                    <b>Groups:</b>
+                  </div>
+                  <div class="column c2">
+                    {% for field in form.groups %}
+                      <div class="checkbox">
+                        <label>
+                          {{ field }}
+                          {{ field.label | striptags }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  </p>
+                </div>
+                <div class="col-md-4 cell">
+                  <div class="column c1">
+                    <b>Gender:</b>
+                  </div>
+                  <div class="column c2">
+                    {% for field in form.gender %}
+                      <div class="checkbox">
+                        <label>
+                          {{ field }}
+                          {{ field.label | striptags }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="col-md-4 cell">
+                  <div class="column c1">
+                    <b>Location:</b>
+                  </div>
+                  <div class="column c2">
+                    {% for field in form.location %}
+                      <div class="checkbox">
+                        <label>
+                          {{ field }}
+                          {{ field.label | striptags }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  </p>
+                </div>
+              </div>
               <button type="submit" class="btn btn-login pull-right">Sort
                 </button>
             </form>

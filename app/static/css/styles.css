@@ -2,6 +2,21 @@ h4 {
   font-size: 20px;
 }
 
+.cell {
+  display: table;
+}
+
+.cell > .column {
+  display: table-cell;
+}
+
+@media (max-width: 990px) {
+  .c1 {
+    width: 80px;
+    padding-right:20px;
+  }
+}
+
 .active {
   background-color: #D4D4D4;
 }
@@ -113,4 +128,11 @@ input[type="radio"]:before,
 .radio input[type="radio"]:before,
 .radio-inline input[type="radio"]:before {
   background-color: #69BE28;
+}
+/* checkbox colors */
+input[type="checkbox"]:checked:after,
+.checkbox input[type="checkbox"]:checked:after,
+.checkbox-inline input[type="checkbox"]:checked:after {
+  background-color: #69BE28;
+  border-color: #69BE28;
 }

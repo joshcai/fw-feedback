@@ -27,5 +27,5 @@ class FilterForm(Form):
   groups = MultiCheckboxField('groups', choices=[('1', 'Group 1'), ('2', 'Group 2'),
       ('3', 'Group 3'), ('4', 'Group 4')])
   gender = MultiCheckboxField('gender', choices=[('m', 'Male'), ('f', 'Female')])
-  location = MultiCheckboxField('location', choices=[('texas', 'Texas'), ('other', 'Outside of Texas')])
+  location = MultiCheckboxField('location', choices=[('texas', 'Texas'), ('other', 'Other')])
 
