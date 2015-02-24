@@ -1,4 +1,18 @@
-vertically center login page
-auto tab to email on login page
-incorrect email / password on login page
 serve static files with nginx
+show scholars condensed view for who they reviewed
+filter by reviewed
+email to account activation
+email for password recovery
+add rating scale
+seed real scholars
+add feedback count to general page
+add navbar?
+reverse button for sorting 
+
+unit test
+stress test
+database backups
+add ssh access to chromebook
+
+star finalists 
+search by name
