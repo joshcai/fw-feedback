@@ -28,4 +28,6 @@ class FilterForm(Form):
       ('3', 'Group 3'), ('4', 'Group 4')])
   gender = MultiCheckboxField('gender', choices=[('m', 'Male'), ('f', 'Female')])
   location = MultiCheckboxField('location', choices=[('texas', 'Texas'), ('other', 'Other')])
+  interaction = MultiCheckboxField('interaction', choices=[('yes', 'You Have Reviewed'),
+    ('no', 'You Have Not Reviewed')])
 

@@ -32,8 +32,7 @@ class Applicant(db.Model):
   feedback = db.relationship('Feedback', backref='applicant', lazy='dynamic')
 
   def calculate_average(self, role):
-    f = db.session.query(Feedback).join(User).join(UserRoles).join(Role).\
-        filter(Feedback.applicant_id == self.id).\
+    f = self.feedback.join(User).join(UserRoles).join(Role).\
         filter(Role.name == role).all()
     ratings = [x.rating for x in f if isinstance(x.rating, (int, long))]
     if len(ratings) == 0:
@@ -42,11 +41,14 @@ class Applicant(db.Model):
     return sum(ratings) / float(len(ratings))
 
   def calculate_good(self, role):
-    f = db.session.query(Feedback).join(User).join(UserRoles).join(Role).\
-        filter(Feedback.applicant_id == self.id).\
+    f = self.feedback.join(User).join(UserRoles).join(Role).\
         filter(Role.name == role).all()
     ratings = [x.rating for x in f if (isinstance(x.rating, int) and x.rating > 3)]
     return len(ratings)
+
+  def reviewed_by(self, user):
+    f = self.feedback.filter_by(user_id=user.id).all()
+    return len(f) > 0
 
   def __repr__(self):
     return '<User %r %r>' % (self.first_name, self.last_name)

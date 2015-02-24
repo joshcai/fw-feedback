@@ -58,7 +58,6 @@
                       </div>
                     {% endfor %}
                   </div>
-                  </p>
                 </div>
                 <div class="col-md-4 cell">
                   <div class="column c1">
@@ -89,7 +88,21 @@
                       </div>
                     {% endfor %}
                   </div>
-                  </p>
+                </div>
+                <div class="col-md-8 cell">
+                  <div class="column c1">
+                    <b>Status:</b>
+                  </div>
+                  <div class="column c6">
+                    {% for field in form.interaction %}
+                      <div class="checkbox">
+                        <label>
+                          {{ field }}
+                          {{ field.label | striptags }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
                 </div>
               </div>
               <button type="submit" class="btn btn-login pull-right">Sort

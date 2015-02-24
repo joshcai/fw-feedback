@@ -20,17 +20,24 @@ def before_request():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def index():
+  #These declarations indicate the default selections for the radio buttons
+  #and checkboxes in the sorting form.
   sort = 'last'
   groups = ['1', '2', '3', '4']
   gender = ['m', 'f']
   location = ['texas', 'other']
-  form = FilterForm(sort=sort, groups=groups, gender=gender, location=location)
+  interaction = ['yes', 'no']
+  form = FilterForm(sort=sort, groups=groups, gender=gender, location=location,
+    interaction=interaction)
   applicants = Applicant.query
+  #If the form has been submitted, change the values of the fields retrieved
+  #from the form to match the submission.
   if form.validate_on_submit():
     sort = form.sort.data
     groups = form.groups.data
     gender = form.gender.data
     location = form.location.data
+    interaction = form.interaction.data
   if sort == 'first':
     applicants = applicants.order_by(Applicant.first_name)
   elif sort == 'last':
@@ -59,11 +66,20 @@ def index():
       location_clauses.append(Applicant.home_state != 'Texas')
     applicants = applicants.filter(or_(*location_clauses))
 
+  #Convert the query item currently pointed to by applicants into an actual list
+  #of Applicants (the model type).
   applicants = applicants.all()
   if sort == 'least':
     applicants = sorted(applicants, key=lambda x: x.feedback_count)
   elif sort == 'most':
     applicants = sorted(applicants, key=lambda x: x.feedback_count, reverse=True)
+  if 'yes' not in interaction:
+    applicants = [applicant for applicant in applicants if not
+      applicant.reviewed_by(g.user)]
+  if 'no' not in interaction:
+    applicants = [applicant for applicant in applicants if
+      applicant.reviewed_by(g.user)]
+
   template = 'index.html'
   if g.user.has_role('staff'):
     template = 'review.html'
