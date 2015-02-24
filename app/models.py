@@ -13,8 +13,7 @@ class Applicant(db.Model):
 
   @property
   def feedback_count(self):
-    f = db.session.query(Feedback).filter_by(applicant_id=self.id).all()
-    return len(f)
+    return len(self.feedback.all())
 
   @property
   def hometown(self):
@@ -41,6 +40,13 @@ class Applicant(db.Model):
       return None
 
     return sum(ratings) / float(len(ratings))
+
+  def calculate_good(self, role):
+    f = db.session.query(Feedback).join(User).join(UserRoles).join(Role).\
+        filter(Feedback.applicant_id == self.id).\
+        filter(Role.name == role).all()
+    ratings = [x.rating for x in f if (isinstance(x.rating, int) and x.rating > 3)]
+    return len(ratings)
 
   def __repr__(self):
     return '<User %r %r>' % (self.first_name, self.last_name)

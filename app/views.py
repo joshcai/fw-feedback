@@ -96,143 +96,6 @@ def password_reset(token):
   login_user(user, remember=True)
   return 200
  
-
-@app.route('/alpha')
-@login_required
-def alpha():
-  applicants = Applicant.query.order_by(Applicant.last_name).all()
-  context = {
-    'title': 'Finalists Sorted by Last Name',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/men')
-@login_required
-def men():
-  applicants = Applicant.query.filter_by(title='Mr.').\
-    order_by(Applicant.last_name).all()
-  context = {
-    'title': 'Male Finalists',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/women')
-@login_required
-def women():
-  applicants = Applicant.query.filter_by(title='Ms.').\
-    order_by(Applicant.last_name).all()
-  context = {
-    'title': 'Female Finalists',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/texas')
-@login_required
-def texas():
-  applicants = Applicant.query.filter_by(home_state='Texas').\
-    order_by(Applicant.last_name).all()
-  context = {
-    'title': 'Finalists from Texas',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/least_feedback')
-@login_required
-def least_feedback():
-  applicants = Applicant.query.order_by(Applicant.last_name).all()
-  applicants = sorted(applicants, key=lambda x: x.feedback_count)
-  context = {
-    'title': 'Finalists Sorted by Least Feedback',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/most_feedback')
-@login_required
-def most_feedback():
-  applicants = Applicant.query.order_by(Applicant.last_name).all()
-  applicants = sorted(applicants, key=lambda x: x.feedback_count,
-    reverse=True)
-  context = {
-    'title': 'Finalists Sorted by Most Feedback',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/group1')
-@login_required
-def group1():
-  applicants = Applicant.query.filter_by(group='1').all()
-  context = {
-    'title': 'Finalists in Group 1',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/group2')
-@login_required
-def group2():
-  applicants = Applicant.query.filter_by(group='2').all()
-  context = {
-    'title': 'Finalists in Group 2',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/group3')
-@login_required
-def group3():
-  applicants = Applicant.query.filter_by(group='3').all()
-  context = {
-    'title': 'Finalists in Group 3',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
-@app.route('/group4')
-@login_required
-def group4():
-  applicants = Applicant.query.filter_by(group='4').all()
-  context = {
-    'title': 'Finalists in Group 4',
-    'applicants': applicants
-  }
-  template = 'index.html'
-  if g.user.has_role('staff'):
-    template = 'review.html'
-  return render_template(template, **context)
-
 @app.route('/export')
 @login_required
 @role_required('staff')
@@ -243,8 +106,11 @@ def export():
   sheet2 = book.add_sheet('Ratings');
   sheet1.write(0, 0, 'Finalists')
   sheet1.write(0, 1, 'Freshman-Juniors Average')
-  sheet1.write(0, 2, 'Seniors Average')
-  sheet1.write(0, 3, 'Alumni Average')
+  sheet1.write(0, 2, 'Freshman-Juniors Votes')
+  sheet1.write(0, 3, 'Seniors Average')
+  sheet1.write(0, 4, 'Seniors Votes')
+  sheet1.write(0, 5, 'Alumni Average')
+  sheet1.write(0, 6, 'Alumni Votes')
   sheet2.write(0, 0, 'Finalist')
   sheet2.write(0, 1, 'Commenter')
   sheet2.write(0, 2, 'Rating')
@@ -256,19 +122,31 @@ def export():
   for i, applicant in enumerate(applicants):
     sheet1.write(i+1, 0, '%s, %s' % (applicant.last_name, applicant.first_name))
     sheet1.write(i+1, 1, applicant.calculate_average('other'))
-    sheet1.write(i+1, 2, applicant.calculate_average('senior'))
-    sheet1.write(i+1, 3, applicant.calculate_average('alumni'))
+    sheet1.write(i+1, 2, applicant.calculate_good('other'))
+    sheet1.write(i+1, 3, applicant.calculate_average('senior'))
+    sheet1.write(i+1, 4, applicant.calculate_good('senior'))
+    sheet1.write(i+1, 5, applicant.calculate_average('alumni'))
+    sheet1.write(i+1, 6, applicant.calculate_good('alumni'))
 
     #Get all the feedback on an applicant ordered by descending rating
     feedbacks = Feedback.query.filter_by(applicant_id=applicant.id).\
       order_by(Feedback.rating.desc()).all()
     for feedback in feedbacks:
       commenter = User.query.filter_by(id=feedback.user_id).first()
-      sheet2.write(s2_line, 0, '%s, %s' % (applicant.last_name, applicant.first_name))
-      sheet2.write(s2_line, 1, '%s' % (commenter.name))
-      sheet2.write(s2_line, 2, '%s' % (feedback.rating))
-      sheet2.write(s2_line, 3, '%s' % (feedback.feedback))
-      s2_line += 1
+      r = True
+      f = True
+      if not feedback.rating or feedback.rating == 'None':
+        r = False
+      if not feedback.feedback or feedback.feedback == 'None':
+        f = False
+      if r or f:
+        sheet2.write(s2_line, 0, '%s, %s' % (applicant.last_name, applicant.first_name))
+        sheet2.write(s2_line, 1, '%s' % (commenter.name))
+        if r:
+          sheet2.write(s2_line, 2, '%s' % (feedback.rating))
+        if f: 
+          sheet2.write(s2_line, 3, '%s' % (feedback.feedback))
+        s2_line += 1
 
   with NamedTemporaryFile() as f:
     book.save(f)
