@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <p class="pull-left">Welcome, {{ current_user.name }} {{ current_user.role }}</p>
+    <div class="pull-right">
+      {% if current_user.has_role("staff") %}
+        <a href="/export" download="ratings.xls">
+          <button type="button" class="btn btn-export">Export Ratings</button>
+        </a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}">
+        <button type="button" class="btn btn-logout">Logout</button>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <a class="pull-left" href="#" data-toggle="modal" data-target=".sorting-modal">
+      <button type="button" class="btn btn-login">Sort Finalists</button>
+    </a>
+  </div>
+  <div class="modal sorting-modal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title text-center" id="myModalLabel">Sort Finalists</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            <form action="" method="post" name="filter">
+              {{ form.hidden_tag() }}
+              <p class="pull-left">
+                <b>Sort:</b>
+                  {% for field in form.sort %}
+                    <div class="radio-inline">
+                      <label>
+                        {{ field }}
+                        {{ field.label | striptags }}
+                      </label>
+                    </div>
+                  {% endfor %}
+              </p>
+              <p class="pull-left">
+                <b>Groups:</b>
+                  {% for field in form.groups %}
+                    <div class="checkbox-inline">
+                      <label>
+                        {{ field }}
+                        {{ field.label | striptags }}
+                      </label>
+                    </div>
+                  {% endfor %}
+              </p>
+              <p class="pull-left">
+                <b>Gender:</b>
+                  {% for field in form.gender %}
+                    <div class="checkbox-inline">
+                      <label>
+                        {{ field }}
+                        {{ field.label | striptags }}
+                      </label>
+                    </div>
+                  {% endfor %}
+              </p>
+              <p class="pull-left">
+                <b>Location:</b>
+                  {% for field in form.location %}
+                    <div class="checkbox-inline">
+                      <label>
+                        {{ field }}
+                        {{ field.label | striptags }}
+                      </label>
+                    </div>
+                  {% endfor %}
+              </p>
+              <button type="submit" class="btn btn-login pull-right">Sort
+                </button>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h2 class="text-center">Finalists</h2>
+  </div>
+  {% block content2 %}{% endblock %}
+{% endblock %}

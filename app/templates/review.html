@@ -1,17 +1,6 @@
-{% extends "base.html" %}
+{% extends "account.html" %}
 
-{% block content %}
-  <p class="pull-left">Welcome, {{ current_user.name }}</p>
-  <div class="pull-right">
-    <a href="/export" download="ratings.xls">
-      <button type="button" class="btn btn-export">Export Ratings</button>
-    </a>
-    <a href="{{ url_for('logout') }}">
-      <button type="button" class="btn btn-logout">Logout</button>
-    </a>
-  </div>
-  <br>
-  <h2>Finalists</h2>
+{% block content2 %}
   {% for applicant in applicants %}
     <div class="row">
       <div class="col-md-3 text-center">
