@@ -1,6 +1,5 @@
 serve static files with nginx
 show scholars condensed view for who they reviewed
-filter by reviewed
 email to account activation
 email for password recovery
 add rating scale
@@ -8,6 +7,8 @@ seed real scholars
 add feedback count to general page
 add navbar?
 reverse button for sorting 
+use sessions to store filter settings / get rid of refresh "confirm resubmission"
+be able to clear rating
 
 unit test
 stress test
