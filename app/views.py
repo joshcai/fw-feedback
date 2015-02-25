@@ -212,13 +212,15 @@ def applicant(applicant_id):
   else:
     form = FeedbackForm()
   if form.validate_on_submit():
-    if not form.notes.data and not form.feedback.data and form.rating.data == 'None':
-      if feedback:
-        db.session.delete(feedback)
-        db.session.commit()
-      return redirect(url_for('index'))
+    #if not form.notes.data and not form.feedback.data and form.rating.data == 'None':
+    #  if feedback:
+    #    db.session.delete(feedback)
+    #    db.session.commit()
+    #  return redirect(url_for('index'))
     if not feedback:
       feedback = Feedback(user_id=g.user.id, applicant_id=applicant_id)
+
+    print('Rating is %s' % form.rating.data)
     
     feedback.notes = form.notes.data
     feedback.feedback = form.feedback.data
