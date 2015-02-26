@@ -10,6 +10,10 @@ h4 {
   display: table-cell;
 }
 
+.status {
+  width: 68px;
+}
+
 @media (max-width: 990px) {
   .c1 {
     width: 80px;
@@ -82,6 +86,7 @@ a img:hover{
 
 img {
   border: 1px solid #008542;
+  border-radius: 3px;
 }
 
 h1, h2, h3 {
