@@ -19,7 +19,7 @@ def password_reset_email(recipient, url):
       'user': recipient,
       'url': url
   }
-  send_email('Finalist\'s Weekend Feedback - Set Password',
+  send_email('Finalists\' Weekend Feedback - Set Password',
       [recipient.email],
       render_template('password_reset.txt', **context),
       render_template('password_reset.html', **context))
