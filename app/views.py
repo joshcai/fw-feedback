@@ -17,54 +17,72 @@ ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 def before_request():
   g.user = current_user
 
+@login_required
+def check_viewed():
+  try:
+    session['viewed'] += 1
+  except KeyError:
+    #If the user has not seen the applicant list before, set the filter values
+    #to their defaults.
+    #These declarations indicate the default selections for the radio buttons
+    #and checkboxes in the sorting form.
+    session['viewed'] = 1
+    session['sort'] = 'last'
+    session['groups'] = ['1', '2', '3', '4']
+    session['gender'] = ['m', 'f']
+    session['location'] = ['texas', 'other']
+    session['interaction'] = ['yes', 'no']
+    
+
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def index():
-  #These declarations indicate the default selections for the radio buttons
-  #and checkboxes in the sorting form.
-  sort = 'last'
-  groups = ['1', '2', '3', '4']
-  gender = ['m', 'f']
-  location = ['texas', 'other']
-  interaction = ['yes', 'no']
+  check_viewed()
+  sort = session['sort']
+  groups = session['groups']
+  gender = session['gender']
+  location = session['location']
+  interaction = session['interaction']
   form = FilterForm(sort=sort, groups=groups, gender=gender, location=location,
     interaction=interaction)
   applicants = Applicant.query
+
   #If the form has been submitted, change the values of the fields retrieved
   #from the form to match the submission.
   if form.validate_on_submit():
-    sort = form.sort.data
-    groups = form.groups.data
-    gender = form.gender.data
-    location = form.location.data
-    interaction = form.interaction.data
+    session['sort'] = form.sort.data
+    session['groups'] = form.groups.data
+    session['gender'] = form.gender.data
+    session['location'] = form.location.data
+    session['interaction'] = form.interaction.data
+    return redirect(url_for('index'))
+
   if sort == 'first':
     applicants = applicants.order_by(Applicant.first_name)
   elif sort == 'last':
     applicants = applicants.order_by(Applicant.last_name)
-  if request.method == 'POST':
-    group_clauses = []
-    if '1' in groups:
-      group_clauses.append(Applicant.group == '1')
-    if '2' in groups:
-      group_clauses.append(Applicant.group == '2')
-    if '3' in groups:
-      group_clauses.append(Applicant.group == '3')
-    if '4' in groups:
-      group_clauses.append(Applicant.group == '4')
-    applicants = applicants.filter(or_(*group_clauses))
-    gender_clauses = []
-    if 'm' in gender:
-      gender_clauses.append(Applicant.title == 'Mr.')
-    if 'f' in gender:
-      gender_clauses.append(Applicant.title == 'Ms.')
-    applicants = applicants.filter(or_(*gender_clauses))
-    location_clauses = []
-    if 'texas' in location:
-      location_clauses.append(Applicant.home_state == 'Texas')
-    if 'other' in location:
-      location_clauses.append(Applicant.home_state != 'Texas')
-    applicants = applicants.filter(or_(*location_clauses))
+  group_clauses = []
+  if '1' in groups:
+    group_clauses.append(Applicant.group == '1')
+  if '2' in groups:
+    group_clauses.append(Applicant.group == '2')
+  if '3' in groups:
+    group_clauses.append(Applicant.group == '3')
+  if '4' in groups:
+    group_clauses.append(Applicant.group == '4')
+  applicants = applicants.filter(or_(*group_clauses))
+  gender_clauses = []
+  if 'm' in gender:
+    gender_clauses.append(Applicant.title == 'Mr.')
+  if 'f' in gender:
+    gender_clauses.append(Applicant.title == 'Ms.')
+  applicants = applicants.filter(or_(*gender_clauses))
+  location_clauses = []
+  if 'texas' in location:
+    location_clauses.append(Applicant.home_state == 'Texas')
+  if 'other' in location:
+    location_clauses.append(Applicant.home_state != 'Texas')
+  applicants = applicants.filter(or_(*location_clauses))
 
   #Convert the query item currently pointed to by applicants into an actual list
   #of Applicants (the model type).
