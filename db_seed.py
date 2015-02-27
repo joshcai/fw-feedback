@@ -40,7 +40,7 @@ roles = ['other', 'senior', 'alumni', 'staff']
 # add users from data file
 for role in roles:
   for user in data[role]:
-    u = User(email=user['email'],
+    u = User(email=user['email'].lower(),
              name=user['name'],
              activated=False)
     db.session.add(u)
@@ -79,9 +79,9 @@ for role in roles:
 #         db.session.commit()
 
 # add myself as admin:
-admin = User.query.filter_by(email='jxc124730@utdallas.edu')
+admin = User.query.filter_by(email='jxc124730@utdallas.edu').first()
 r = Role.query.filter_by(name='admin').first()
-ur = UserRoles(user_id=u.id, role_id=r.id)
+ur = UserRoles(user_id=admin.id, role_id=r.id)
 db.session.add(ur)
 db.session.commit()
 

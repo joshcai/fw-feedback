@@ -16,6 +16,7 @@ ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 @app.before_request
 def before_request():
   g.user = current_user
+  g.ga_id = app.config['GA_ID']
 
 @login_required
 def check_viewed():
@@ -149,7 +150,7 @@ def reset_password(token):
 def forgot_password():
   form = ForgotForm()
   if form.validate_on_submit():
-    user = User.query.filter_by(email=form.email.data).first()
+    user = User.query.filter_by(email=form.email.data.lower()).first()
     if user:
       send_activation_email(user.id)
       flash('Password Reset Email Sent!')
@@ -229,7 +230,7 @@ def login():
   #If the request was a POST request (user hit Login) and the fields were valid
   if form.validate_on_submit():
     #Find the user with the email that was specified
-    user = User.query.filter_by(email=form.email.data).first()
+    user = User.query.filter_by(email=form.email.data.lower()).first()
     #If the email is found in the database, check the password
     if user:
       #If the password is correct, login the user
