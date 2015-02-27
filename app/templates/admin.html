@@ -10,7 +10,7 @@
     {% for user in users %}
       <p> {{user.name}}
         {% if user.activated %}
-          - Activated
+          - <strong>Activated</strong>
         {% endif %}
         - <a href="/sendreset/{{ user.id }}">Send Reset Email</a>
       </p>
