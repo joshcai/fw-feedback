@@ -4,16 +4,20 @@
   <div class="row">
     <div class="well col-xs-12 col-sm-8 col-md-6 col-lg-6 centered text-center">
       <h3>{{ applicant.name }}</h3>
-      <div class="row col-md-12 applicant-info cell">
-        <img class="column" src="{{ applicant.img }}" width=150 height=180>
-        <p class="column text-left">
-          <b>Group:</b> {{ applicant.group }}<br>
-          <b>Hometown:</b> {{ applicant.hometown }}<br>
-          <b>High School:</b> {{ applicant.high_school }}<br>
-          <b>Major:</b> {{ applicant.major }}<br>
-          <b>Career:</b> {{ applicant.career }}<br>
-          <b>Feedback Count:</b> {{ applicant.feedback_count }}
-        </p>
+      <div class="row applicant-info">
+        <div class="col-xs-6 col-sm-4 col-md-4">
+          <img class="pull-center" src="{{ applicant.img }}" width=150 height=180>
+        </div>
+        <div class="col-xs-6 col-sm-8 col-md-8">
+          <p class="text-left">
+            <b>Group:</b> {{ applicant.group }}<br>
+            <b>Hometown:</b> {{ applicant.hometown }}<br>
+            <b>High School:</b> {{ applicant.high_school }}<br>
+            <b>Major:</b> {{ applicant.major }}<br>
+            <b>Career:</b> {{ applicant.career }}<br>
+            <b>Feedback Count:</b> {{ applicant.feedback_count }}
+          </p>
+        </div>
       </div>
       <br><br>
       <div class="text-left">
