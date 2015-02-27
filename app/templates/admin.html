@@ -5,9 +5,15 @@
   <a href="{{ url_for('logout') }}">Logout</a>
   <br>
   <h2>Users</h2>
+  <a href="/sendallresets">Send All Reset Passwords</a>
   <div class="row">
     {% for user in users %}
-      <p> {{user.name}} </p>
+      <p> {{user.name}}
+        {% if user.activated %}
+          - Activated
+        {% endif %}
+        - <a href="/sendreset/{{ user.id }}">Send Reset Email</a>
+      </p>
     {% endfor %}
   </div>
 {% endblock %}

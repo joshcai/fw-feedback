@@ -1,8 +1,8 @@
-from flask import render_template, flash, redirect, session, url_for, request, g, send_file
+from flask import render_template, flash, redirect, session, url_for, request, g, send_file, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
-from forms import LoginForm, FeedbackForm, FilterForm
+from forms import LoginForm, FeedbackForm, FilterForm, PasswordForm, ForgotForm
 from models import User, Feedback, Applicant
 from decorators import role_required
 from tempfile import NamedTemporaryFile
@@ -91,27 +91,55 @@ def index():
   return render_template(template, **context)
 
 @app.route('/sendreset/<int:user_id>')
-@login_required
-@role_required('admin')
 def send_activation_email(user_id):
   user = User.query.get(user_id)
-  token = ts.dumps(user.email, salt='email-confirm-yay')
+  token = ts.dumps(user.email, salt=app.config['SALT'])
   url = url_for('reset_password', token=token, _external=True)
   password_reset_email(user, url)
   return 200
- 
-# Not finished
-@app.route('/reset/<token>')
-def password_reset(token):
+
+@app.route('/sendallresets')
+@login_required
+@role_required('admin')
+def send_all_activation_emails():
+  users = User.query.all()
+  for user in users:
+    token = ts.dumps(user.email, salt=app.config['SALT'])
+    url = url_for('reset_password', token=token, _external=True)
+    password_reset_email(user, url)
+  return 200
+
+@app.route('/reset/<token>', methods=['GET', 'POST'])
+def reset_password(token):
   try:
-    email = ts.loads(token, salt='email-confirm-yay', max_age=86400)
+    email = ts.loads(token, salt=app.config['SALT'], max_age=86400)
   except:
     abort(404)
   user = User.query.filter_by(email=email).first()
+  form = PasswordForm()
+  if form.validate_on_submit():
+    user.password = generate_password_hash(form.password.data)
+    if not user.activated:
+      user.activated = True
+    db.session.add(user)
+    db.session.commit()
+    login_user(user, remember=True)
+    return redirect(request.args.get('next') or url_for('index'))
+  return render_template('password.html', title='Set Password', form=form)
 
-  login_user(user, remember=True)
-  return 200
- 
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot_password():
+  form = ForgotForm()
+  if form.validate_on_submit():
+    user = User.query.filter_by(email=form.email.data).first()
+    if user:
+      send_activation_email(user.id)
+      flash('Password Reset Email Sent!')
+      return redirect(url_for('login'))
+    else:
+      flash('Email not found')
+  return render_template('forgot.html', title='Forgot Password', form=form)
+
 @app.route('/export')
 @login_required
 @role_required('staff')
@@ -160,7 +188,7 @@ def export():
         sheet2.write(s2_line, 1, '%s' % (commenter.name))
         if r:
           sheet2.write(s2_line, 2, '%s' % (feedback.rating))
-        if f: 
+        if f:
           sheet2.write(s2_line, 3, '%s' % (feedback.feedback))
         s2_line += 1
 
@@ -221,7 +249,7 @@ def applicant(applicant_id):
       feedback = Feedback(user_id=g.user.id, applicant_id=applicant_id)
 
     print('Rating is %s' % form.rating.data)
-    
+
     feedback.notes = form.notes.data
     feedback.feedback = form.feedback.data
     feedback.rating = form.rating.data
@@ -238,6 +266,7 @@ def applicant(applicant_id):
   return render_template('applicant.html', **context)
 
 @app.route('/admin')
+@role_required('admin')
 @login_required
 def admin():
   #Get all of the users using a query.

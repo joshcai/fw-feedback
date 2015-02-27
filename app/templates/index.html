@@ -3,7 +3,7 @@
 {% block content2 %}
   <div class="row">
     {% for applicant in applicants %}
-      <div class="col-md-3 text-center">
+      <div class="col-md-3 col-sm-4 col-xs-6 text-center bot-margin">
         <a href="feedback/{{ applicant.id }}">
           <img src="{{ applicant.img }}" width=150 height=180>
           <br>

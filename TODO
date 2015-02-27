@@ -8,7 +8,7 @@ add feedback count to general page
 add navbar?
 reverse button for sorting 
 use sessions to store filter settings / get rid of refresh "confirm resubmission"
-be able to clear rating
+front end javascript to make sure they pick a rating if they leave feedback
 
 unit test
 stress test
@@ -16,4 +16,3 @@ database backups
 add ssh access to chromebook
 
 star finalists 
-search by name

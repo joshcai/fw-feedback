@@ -7,3 +7,7 @@ db_repository/
 app/static/img/
 scholar_info.txt
 generate_json.py
+volunteers.json
+other.json
+senior.json
+volunteers.csv

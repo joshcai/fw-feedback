@@ -9,17 +9,17 @@ def send_async_email(app, msg):
     mail.send(msg)
 
 def send_email(subject, recipients, text_body, html_body):
-  msg = Message(subject, sender=app.config['SENDER'], recipient=recipients)
+  msg = Message(subject, sender=app.config['SENDER'], recipients=recipients)
   msg.body = text_body
   msg.html = html_body
   send_async_email(app, msg)
 
 def password_reset_email(recipient, url):
-  context = { 
+  context = {
       'user': recipient,
       'url': url
   }
-  send_email('McDermott Finalist\'s Weekend Feedback - Account Activation',
+  send_email('Finalist\'s Weekend Feedback - Set Password',
       [recipient.email],
       render_template('password_reset.txt', **context),
       render_template('password_reset.html', **context))

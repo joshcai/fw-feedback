@@ -2,6 +2,16 @@ h4 {
   font-size: 20px;
 }
 
+.alert-danger {
+  background-color: #aaa;
+  border-color: #aaa;
+  color: #eee;
+}
+
+.bot-margin {
+  margin-bottom: 25px;
+}
+
 .cell {
   display: table;
 }

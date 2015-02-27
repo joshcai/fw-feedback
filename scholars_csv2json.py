@@ -5,11 +5,14 @@ labels = ("Start Date/Time","End Date/Time","Location","Qty","Item","Item Commen
 csv_f = open('volunteers.csv', 'r')
 csvfile = csv.DictReader(csv_f, labels)
 output = []
+scholars = set()
 for r in csvfile:
   print r
-  row = {
-      'name': '%s %s' % (r['first'], r['last']),
-      'email': r['email']
-  }
-  output.append(row)
-json.dump(output, open('volunteers.json', 'w'), indent=4, sort_keys=False)
+  if r['email'] not in scholars:
+    row = {
+        'name': '%s %s' % (r['first'], r['last']),
+        'email': r['email']
+    }
+    output.append(row)
+    scholars.add(r['email'])
+json.dump(output, open('volunteers.json', 'w'), indent=2, sort_keys=False)

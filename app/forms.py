@@ -9,7 +9,7 @@ class MultiCheckboxField(SelectMultipleField):
 class LoginForm(Form):
   email = StringField('email', validators=[DataRequired()])
   password = PasswordField('password', validators=[DataRequired()])
-  # Length(min=5, max=120)
+
 class FeedbackForm(Form):
   notes = TextAreaField('notes', validators=[Optional()])
   feedback = TextAreaField('feedback')
@@ -17,7 +17,7 @@ class FeedbackForm(Form):
                       ('4', '4'), ('5', '5 (best)')], validators=[Optional()])
 
 class PasswordForm(Form):
-  password = PasswordField('password', 
+  password = PasswordField('password',
       validators=[DataRequired(), Length(min=5, max=30), EqualTo('confirm', message='Passwords must match')])
   confirm = PasswordField('password_confirm')
 
@@ -31,3 +31,5 @@ class FilterForm(Form):
   interaction = MultiCheckboxField('interaction', choices=[('yes', 'Reviewed'),
     ('no', 'Not Reviewed')])
 
+class ForgotForm(Form):
+  email = StringField('email', validators=[DataRequired()])
