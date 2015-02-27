@@ -16,6 +16,7 @@ ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 @app.before_request
 def before_request():
   g.user = current_user
+  g.ga_id = app.config['GA_ID']
 
 @app.route('/home', methods=['GET', 'POST'])
 @login_required

@@ -9,6 +9,8 @@ SECRET_KEY = 'secrethere'
 
 SALT = 'another secret'
 
+GA_ID = 'google analytics id here'
+
 MAIL_SERVER = 'smtpauth.utdallas.edu'
 MAIL_PORT = 587
 MAIL_USE_TLS = True
