@@ -28,7 +28,14 @@
             {{ form.feedback(class="form-control", rows=4) }}<br>
           </p>
           <p>
-            Rating: &nbsp;&nbsp;&nbsp;&nbsp;
+            Rating
+            <a data-toggle="tooltip" data-placement="top" data-html="true"
+              title="(5) Strong Yes<br>
+              (4) Yes: Little or no reservations<br>
+              (3) Yes: Some reservations<br>
+              (2) No: Significant reservations<br>
+              (1) Strong No"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            : &nbsp;&nbsp;&nbsp;&nbsp;
             {% for field in form.rating %}
               <label class="radio-inline">
                 {{ field }}
@@ -36,12 +43,7 @@
               </label>
             {% endfor %}
           </p>
-          <a data-toggle="tooltip" data-placement="top" data-html="true"
-            title="(5) Strong Yes<br>
-            (4) Yes: Little or no reservations<br>
-            (3) Yes: Some reservations<br>
-            (2) No: Significant reservations<br>
-            (1) Strong No">Rating scale</a>
+
           <div class="text-center">
           <br>
           <div class="text-center">
