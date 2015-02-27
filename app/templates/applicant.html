@@ -5,7 +5,7 @@
     <div class="well col-xs-12 col-sm-8 col-md-6 col-lg-6 centered text-center">
       <h3>{{ applicant.name }}</h3>
       <div class="row col-md-12 applicant-info cell">
-        <img class="pull-left" src="{{ applicant.img }}" width=150 height=180>
+        <img class="column pull-left" src="{{ applicant.img }}" width=150 height=180>
         <p class="column text-left">
           <b>Group:</b> {{ applicant.group }}<br>
           <b>Hometown:</b> {{ applicant.hometown }}<br>
@@ -16,7 +16,7 @@
         </p>
       </div>
       <br><br>
-      <div class=" text-left">
+      <div class="text-left">
         <form action="" method="post" name="feedback">
           {{ form.hidden_tag() }}
           <p>
