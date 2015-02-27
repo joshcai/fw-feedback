@@ -33,7 +33,7 @@ def check_viewed():
     session['gender'] = ['m', 'f']
     session['location'] = ['texas', 'other']
     session['interaction'] = ['yes', 'no']
-    
+
 
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
@@ -234,11 +234,14 @@ def login():
     #If the email is found in the database, check the password
     if user:
       #If the password is correct, login the user
-      if check_password_hash(user.password, form.password.data):
+      if not user.password:
+        flash('Password not set')
+      elif check_password_hash(user.password, form.password.data):
         login_user(user, remember=True)
         #Send them to the index page, or whatever page they were trying to access
         return redirect(request.args.get('next') or url_for('index'))
-      flash('Wrong Password')
+      else:
+        flash('Wrong Password')
     else:
       flash('No Email Found')
   return render_template('login.html', title='Sign In', form=form)
