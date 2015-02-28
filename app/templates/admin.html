@@ -4,8 +4,42 @@
   <p>Welcome, {{ current_user.name }}</p>
   <a href="{{ url_for('logout') }}">Logout</a>
   <br>
+  <div class="row">
+    <div class="col-md-4 centered well">
+      <h2>Add User</h2>
+      <form action="" method="post" name="filter">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>Email:</label>
+          {{ form.email(class="form-control") }}
+          {% for error in form.email.errors %}
+            <span class="form-error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <label>Name:</label>
+          {{ form.name(class="form-control") }}
+          {% for error in form.email.errors %}
+            <span class="form-error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <p>
+          Role: &nbsp;&nbsp;&nbsp;&nbsp;
+          {% for field in form.roles %}
+            <label class="radio-inline">
+              {{ field }}
+              {{ field.label | striptags }}
+            </label>
+          {% endfor %}
+        </p>
+        <button type="submit" class="btn btn-save">Add User</button>
+      </form>
+    </div>
+  </div>
   <h2>Users</h2>
   <a href="/sendallresets">Send All Reset Passwords</a>
+  <br>
+  <a href="/sendallunactivated">Send Unactivated Users Reset Passwords</a>
   <div class="row">
     {% for user in users %}
       <p> {{user.name}}

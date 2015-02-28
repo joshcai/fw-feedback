@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
-from forms import LoginForm, FeedbackForm, FilterForm, PasswordForm, ForgotForm
-from models import User, Feedback, Applicant
+from forms import LoginForm, FeedbackForm, FilterForm, PasswordForm, ForgotForm, AddUserForm
+from models import User, Feedback, Applicant, Role, UserRoles
 from decorators import role_required
 from tempfile import NamedTemporaryFile
 from xlwt import Workbook
@@ -115,7 +115,9 @@ def send_activation_email(user_id):
   token = ts.dumps(user.email, salt=app.config['SALT'])
   url = url_for('reset_password', token=token, _external=True)
   password_reset_email(user, url)
-  return 200
+  if g.user is not None and g.user.is_authenticated() and current_user.has_role('admin'):
+    flash('Email sent for user %s' % str(user_id))
+  return redirect(url_for('admin'))
 
 @app.route('/sendallresets')
 @login_required
@@ -126,7 +128,20 @@ def send_all_activation_emails():
     token = ts.dumps(user.email, salt=app.config['SALT'])
     url = url_for('reset_password', token=token, _external=True)
     password_reset_email(user, url)
-  return 200
+  flash('All activation emails sent')
+  return redirect(url_for('admin'))
+
+@app.route('/sendallunactivated')
+@login_required
+@role_required('admin')
+def send_unactivated_activation_emails():
+  users = User.query.filter_by(activated=False).all()
+  for user in users:
+    token = ts.dumps(user.email, salt=app.config['SALT'])
+    url = url_for('reset_password', token=token, _external=True)
+    password_reset_email(user, url)
+  flash('Activation emails sent to all unactivated users')
+  return redirect(url_for('admin'))
 
 @app.route('/reset/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -287,14 +302,27 @@ def applicant(applicant_id):
   }
   return render_template('applicant.html', **context)
 
-@app.route('/admin')
-@role_required('admin')
+@app.route('/admin', methods=['GET', 'POST'])
 @login_required
+@role_required('admin')
 def admin():
   #Get all of the users using a query.
   users = User.query.order_by(User.name).all()
+  form = AddUserForm()
+  if form.validate_on_submit():
+    u = User(email=form.email.data, name=form.name.data, activated=False)
+    db.session.add(u)
+    db.session.commit()
+    r = Role.query.filter_by(name=form.roles.data).first()
+    if r:
+      ur = UserRoles(user_id=u.id, role_id=r.id)
+      db.session.add(ur)
+      db.session.commit()
+    send_activation_email(u.id)
+    flash('User added successfully, email sent')
+    return redirect(url_for('admin'))
   #Send users to template
-  return render_template('admin.html', users=users)
+  return render_template('admin.html', users=users, form=form)
 
 
 @lm.user_loader

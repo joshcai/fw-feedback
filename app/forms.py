@@ -33,3 +33,9 @@ class FilterForm(Form):
 
 class ForgotForm(Form):
   email = StringField('email', validators=[DataRequired()])
+
+class AddUserForm(Form):
+  email = StringField('email', validators=[DataRequired()])
+  name = StringField('name', validators=[DataRequired()])
+  roles = RadioField('roles', choices=[('other', 'Other'),
+    ('senior', 'Senior'), ('alumni', 'Alumni'), ('staff', 'Staff')])
