@@ -8,11 +8,11 @@ class Applicant(db.Model):
 
   @property
   def img(self):
-    return '/static/img/%s,%s.jpg' % (self.last_name.title(),
+    return '/static/img/%s,%s.jpg' % (self.last_name.title().replace('\'', ''),
                                       self.first_name.title())
   @property
   def new_img(self):
-    return '/static/img/%s,%s2.jpg' % (self.last_name.title(),
+    return '/static/img/%s,%s2.jpg' % (self.last_name.title().replace('\'', ''),
                                       self.first_name.title())
 
   @property
