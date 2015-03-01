@@ -42,7 +42,7 @@
   <a href="/sendallunactivated">Send Unactivated Users Reset Passwords</a>
   <div class="row">
     {% for user in users %}
-      <p> {{user.name}}
+      <p> {{user.name}}, {{ user.email }}
         {% if user.activated %}
           - <strong>Activated</strong>
         {% endif %}
