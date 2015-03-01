@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-3 text-center">
         <a href="feedback/{{ applicant.id }}">
-          <img src="{{ applicant.img }}" width=150 height=180>
+          <img src="{{ applicant.new_img }}" onmouseover="this.src='{{ applicant.img }}'" onmouseout="this.src='{{ applicant.new_img }}'" width=150 height=180>
           <br>
           {{ applicant.name }}
         </a>
@@ -35,21 +35,21 @@
             {% set o_avg = applicant.calculate_average('other') %}
             {% if o_avg %}
               {{ "%.2f" | format(o_avg) }}
-            {% endif %} 
+            {% endif %}
           </div>
           <div class="col-md-4">
             Seniors:
             {% set s_avg = applicant.calculate_average('senior') %}
             {% if s_avg %}
               {{ "%.2f" | format(s_avg) }}
-            {% endif %} 
+            {% endif %}
           </div>
           <div class="col-md-4">
             Alumni:
             {% set a_avg = applicant.calculate_average('alumni') %}
             {% if a_avg %}
               {{ "%.2f" | format(a_avg) }}
-            {% endif %} 
+            {% endif %}
           </div>
         </div>
       </div>

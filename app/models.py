@@ -10,6 +10,10 @@ class Applicant(db.Model):
   def img(self):
     return '/static/img/%s,%s.jpg' % (self.last_name.title(),
                                       self.first_name.title())
+  @property
+  def new_img(self):
+    return '/static/img/%s,%s2.jpg' % (self.last_name.title(),
+                                      self.first_name.title())
 
   @property
   def feedback_count(self):

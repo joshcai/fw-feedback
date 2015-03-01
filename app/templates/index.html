@@ -5,7 +5,7 @@
     {% for applicant in applicants %}
       <div class="col-md-3 col-sm-4 col-xs-6 text-center bot-margin">
         <a href="feedback/{{ applicant.id }}">
-          <img src="{{ applicant.img }}" width=150 height=180>
+          <img src="{{ applicant.new_img }}" onmouseover="this.src='{{ applicant.img }}'" onmouseout="this.src='{{ applicant.new_img }}'" width=150 height=180>
           <br>
           {{ applicant.name }}
         </a>

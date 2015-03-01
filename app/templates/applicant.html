@@ -6,7 +6,7 @@
       <h3>{{ applicant.name }}</h3>
       <div class="row applicant-info">
         <div class="col-xs-6 col-sm-4 col-md-4">
-          <img class="pull-center" src="{{ applicant.img }}" width=150 height=180>
+          <img class="pull-center" src="{{ applicant.new_img }}" onmouseover="this.src='{{ applicant.img }}'" onmouseout="this.src='{{ applicant.new_img }}'" width=150 height=180>
         </div>
         <div class="col-xs-6 col-sm-8 col-md-8">
           <p class="text-left">
