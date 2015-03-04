@@ -1,5 +1,5 @@
 # mcdermott
-input system for finalist's weekend
+input system for finalists' weekend
 
 To get the Git repository the first time do:
 
