@@ -1,4 +1,4 @@
-# mcdermott
+# fw-feedback
 input system for finalists' weekend
 
 To get the Git repository the first time do:
@@ -38,14 +38,3 @@ python run.py
 ```
 
 Navigate to http://localhost:5000/ to see the app.
-
-The other git commands you might need are:
-
-```
-git pull
-git status
-git add [file]
-git add -A (to add all files)
-git commit -m "[message]"
-git push
-```
