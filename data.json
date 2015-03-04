@@ -1,0 +1,67 @@
+{
+  "applicants": [
+    {
+      "title": "Mr.",
+      "first": "Applicant",
+      "last": "1",
+      "group": "1",
+      "city": "City1",
+      "state": "State1",
+      "school": "Generic School 1",
+      "major": "Major1, Major2",
+      "career": "Career1, Career2"
+    },
+    {
+      "title": "Ms.",
+      "first": "Applicant",
+      "last": "2",
+      "group": "3",
+      "city": "City2",
+      "state": "State2",
+      "school": "Generic School 2",
+      "major": "Major1, Major2",
+      "career": "Career1, Career2, Career3"
+    }
+  ],
+  "roles": ["other", "senior", "alumni", "staff", "admin"],
+  "other": [
+    {
+      "name": "Scholar 1",
+      "email": "scholar1@example.com"
+    },
+    {
+      "name": "Scholar 2",
+      "email": "scholar2@example.com"
+    }
+  ],
+  "senior": [
+    {
+      "name": "Senior 1",
+      "email": "senior1@example.com"
+    },
+    {
+      "name": "Senior 2",
+      "email": "senior2@example.com"
+    }
+  ],
+  "staff": [
+    {
+      "name": "Staff 1",
+      "email": "staff1@example.com"
+    },
+    {
+      "name": "Staff 2",
+      "email": "staff2@example.com"
+    }
+  ],
+  "alumni": [
+    {
+      "name": "Alumni 1",
+      "email": "alumni1@example.com"
+    },
+    {
+      "name": "Alumni 2",
+      "email": "alumni2@example.com"
+    },
+  ]
+}

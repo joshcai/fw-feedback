@@ -1,18 +1,16 @@
-serve static files with nginx
 show scholars condensed view for who they reviewed
-email to account activation
-email for password recovery
-add rating scale
-seed real scholars
-add feedback count to general page
 add navbar?
-reverse button for sorting 
-use sessions to store filter settings / get rid of refresh "confirm resubmission"
+reverse button for sorting
 front end javascript to make sure they pick a rating if they leave feedback
 
 unit test
 stress test
-database backups
-add ssh access to chromebook
 
-star finalists 
+
+next year features:
+star finalists
+pick top three scholars
+directory view for faculty
+use front-end javascript framework and move to a REST API
+better searchability
+remove feedback count feature for scholars
